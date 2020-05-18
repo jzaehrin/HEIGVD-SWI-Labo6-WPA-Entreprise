@@ -69,13 +69,13 @@ Dans cette première partie, vous allez analyser [une connexion WPA Entreprise](
  
 > **_Question :_** Quelle ou quelles méthode(s) d’authentification est/sont proposé(s) au client ?
 > 
-> **_Réponse :_** 
+> **_Réponse :_** Les méthodes proposés au client sont EAP TLS puis PEAP car le client refuse la première methode
 
 ---
 
 > **_Question:_** Quelle méthode d’authentification est finalement utilisée ?
 > 
-> **_Réponse:_** 
+> **_Réponse:_** Le client accepte la méthode PEAP
 
 ---
 
@@ -83,12 +83,73 @@ Dans cette première partie, vous allez analyser [une connexion WPA Entreprise](
 > 
 > - a. Le serveur envoie-t-il un certificat au client ? Pourquoi oui ou non ?
 > 
-> **_Réponse:_**
+> **_Réponse:_** Oui le serveur envoi toujours un certificate au client peu importe la méthode qui utilise TLS.
 > 
 > - b. Le client envoie-t-il un certificat au serveur ? Pourquoi oui ou non ?
 > 
-> **_Réponse:_**
+> **_Réponse:_** Non car PEAP ne demande pas de certificate au client pour s'authentifié au près du serveur.
 > 
+
+---
+
+### Capture des trames et explications
+
+#### Système ouvert
+
+![](files/images/01_opensystem_req.png)
+
+![](files/images/02_opensystem_resp.png)
+
+#### (Re)Association
+
+![](files/images/03_reassociation_req.png)
+
+![](files/images/04_reassociation_resp.png)
+
+#### Phase d'initiation
+
+![](files/images/05_identity_req.png)
+
+![](files/images/05_identity_resp.png)
+
+#### Négociation de la méthode
+
+![](files/images/06_eap_tls_req.png)
+
+![](files/images/07_eap_tls_nak_resp.png)
+
+![](files/images/08_peap_req.png)
+
+#### Phase hello
+
+![](files/images/09_client_hello.png)
+
+#### Phase de transmission de certificats et change cipher spec
+
+![](files/images/10_peap_req_with_cert.png)
+
+![](files/images/11_change_cipher.png)
+
+![](files/images/12_peap_resp.png)
+
+#### Auth interne
+
+![](files/images/13_auth_internal.png)
+
+![](files/images/14_peap_resp_client.png)
+
+![](files/images/15_success.png)
+
+#### 4-way handshake
+
+![](files/images/16_4way_1.png)
+
+![](files/images/17_4way_2.png)
+
+![](files/images/18_4way_3.png)
+
+![](files/images/19_4way_4.png)
+
 
 ---
 
