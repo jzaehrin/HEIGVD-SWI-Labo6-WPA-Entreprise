@@ -98,117 +98,197 @@ Dans cette première partie, vous allez analyser [une connexion WPA Entreprise](
 
 ![](files/images/01_opensystem_req.png)
 
+*Opensystem Request (Client -> AP)*
+
 ![](files/images/02_opensystem_resp.png)
+
+*Opensystem Response (Client <- AP)*
 
 #### (Re)Association
 
+Dans le cas précis, on observe une **ré**association de l'utilisateur, indiquant qu'il connaissait déjà le réseau en question.
+
 ![](files/images/03_reassociation_req.png)
+
+*(Re)association Request (Client -> AP)*
+
+
 
 ![](files/images/04_reassociation_resp.png)
 
+*(Re)association Response (Client <- AP)*
+
 #### Phase d'initiation
+
+*Arrivez-vous à voir l’identité du client ?*
+- Oui, le client ne s'identifie pas de manière anonyme, son identifiant est "joel.gonin" dans le domaine "einet".
 
 ![](files/images/05_identity_req.png)
 
+*Identity Request (Client <- AP)*
+
 ![](files/images/05_identity_resp.png)
+
+*Inidentity Response (Client -> AP)*
+
+**Différences avec la théorie:**
+
+- La demande d'identification n'est pas détaillée dans la théorie, mais nous savons qu'une première identification est demandée avant l'authentification.
 
 #### Négociation de la méthode
 
+L'AP propose en premier lieu l'utilisation de EAP-TLS, ce que refuse le client.
+L'AP propose alors EAP-PEAP, ce que le client accepte finalement tacitement, en poursuivant la séquence.
+
 ![](files/images/06_eap_tls_req.png)
+
+*Request TLS EAP (Client <- AP)*
 
 ![](files/images/07_eap_tls_nak_resp.png)
 
+*Response Legacy NAK (Client -> AP)*
+
 ![](files/images/08_peap_req.png)
+
+*Request Protected EAP (Client <- AP)*
+
+**Différences avec la théorie:**
+
+- La théorie ne définit simplement pas la négociation de la méthode.
 
 #### Phase hello
 
+Acceptation de la méthode et suite en séquence du protocole d'authentification.
+
 ![](files/images/09_client_hello.png)
+
+*Hello (Client -> AP)*
+
+Propositions du clients :
+- Version TLS : 1.2
+- Suites cryptographiques et méthodes de compression :
+    - Aucune méthode de compression n'est proposée (`NULL`).
+    - Suites cryptographiques :
+    ```default
+    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 (0xc02c)
+    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (0xc030)
+    Cipher Suite: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 (0x009f)
+    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 (0xc02b)
+    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (0xc02f)
+    Cipher Suite: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 (0x009e)
+    Cipher Suite: TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 (0xcca9)
+    Cipher Suite: TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256 (0xcca8)
+    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA (0xc00a)
+    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384 (0xc024)
+    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (0xc014)
+    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384 (0xc028)
+    Cipher Suite: TLS_DHE_RSA_WITH_AES_256_CBC_SHA (0x0039)
+    Cipher Suite: TLS_DHE_RSA_WITH_AES_256_CBC_SHA256 (0x006b)
+    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA (0xc009)
+    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 (0xc023)
+    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (0xc013)
+    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 (0xc027)
+    Cipher Suite: TLS_DHE_RSA_WITH_AES_128_CBC_SHA (0x0033)
+    Cipher Suite: TLS_DHE_RSA_WITH_AES_128_CBC_SHA256 (0x0067)
+    Cipher Suite: TLS_ECDHE_ECDSA_WITH_RC4_128_SHA (0xc007)
+    Cipher Suite: TLS_ECDHE_RSA_WITH_RC4_128_SHA (0xc011)
+    Cipher Suite: TLS_RSA_WITH_AES_256_GCM_SHA384 (0x009d)
+    Cipher Suite: TLS_RSA_WITH_AES_128_GCM_SHA256 (0x009c)
+    Cipher Suite: TLS_RSA_WITH_AES_256_CBC_SHA (0x0035)
+    Cipher Suite: TLS_RSA_WITH_AES_256_CBC_SHA256 (0x003d)
+    Cipher Suite: TLS_RSA_WITH_AES_128_CBC_SHA (0x002f)
+    Cipher Suite: TLS_RSA_WITH_AES_128_CBC_SHA256 (0x003c)
+    Cipher Suite: TLS_RSA_WITH_RC4_128_SHA (0x0005)
+    Cipher Suite: TLS_RSA_WITH_RC4_128_MD5 (0x0004)
+    Cipher Suite: TLS_RSA_WITH_3DES_EDE_CBC_SHA (0x000a)
+  
+    Signature Algorithm: rsa_pkcs1_sha512 (0x0601)
+    Signature Algorithm: ecdsa_secp521r1_sha512 (0x0603)
+    Signature Algorithm: rsa_pkcs1_sha384 (0x0501)
+    Signature Algorithm: ecdsa_secp384r1_sha384 (0x0503)
+    Signature Algorithm: rsa_pkcs1_sha256 (0x0401)
+    Signature Algorithm: ecdsa_secp256r1_sha256 (0x0403)
+    Signature Algorithm: SHA224 RSA (0x0301)
+    Signature Algorithm: SHA224 ECDSA (0x0303)
+    Signature Algorithm: rsa_pkcs1_sha1 (0x0201)
+    Signature Algorithm: ecdsa_sha1 (0x0203)
+    ```
+- Nonces : `955bf5b716e24a729c4b60609b8ce482014ac38f1e9cb8cf2bf8fd30bf8995f1`
+- Session ID : `9f1bbf1e90b88366a836db08d659f906a637ac31920e06f622762ca6c522a64f`
+
 
 #### Phase de transmission de certificats et change cipher spec
 
 ![](files/images/10_peap_req_with_cert.png)
 
+*Server Hello, Certificate, Server Hello Done (Client <- AP)*
+
+Choix de l'AP :
+- Suite cryptographique et méthodes de compression:
+    - Aucune méthode ne sera utilisée (`NULL`).
+    - Suite cryptographique :
+        ```Cipher Suite: TLS_RSA_WITH_AES_256_CBC_SHA```
+- Nonces : `003b6c26003b6c2676ffd79814e56c065e5b0c39cb26600148ca1e9b3e8af83426d46e11`
+
 ![](files/images/11_change_cipher.png)
 
+*TLS change cipher spec (Client <- AP)*
+
 ![](files/images/12_peap_resp.png)
+
+*Response Protected EAP (Client -> AP)*
+
+**Différences avec la théorie:**
+
+- Dans la théorie, on la transmission de plusieurs messages distincts alors que dans le cas de cette capture, un seul paquet cumule les fonctions de plusieurs messages.
+- On obsere également que l'AP prend l'initiative d'immédiatement démarrer la communication chiffrée.
+- Le client ne fait finalement qu'accepter (après vérifications) la spécification, sans envoyer lui-même le message `TLS change cipher spec` comme présenté dans la théorie.
 
 #### Auth interne
 
 ![](files/images/13_auth_internal.png)
 
+*Extrait d'une communication chiffrée de 7 paquets entre client et AP*
+
+Liste des messages (supposée, vis-à-vis de la théorie):
+1. Request Identity
+2. Response Identity
+3. Request Challenge
+4. Response Challenge
+5. Request Success
+6. Response ACK 
+7. TLS Tunnel Down
+
 ![](files/images/14_peap_resp_client.png)
 
+*Response Protected EAP (Client -> AP)*
+
 ![](files/images/15_success.png)
+
+*Success (Client <- AP)*
+
+**Différences avec la théorie:**
+
+- Les deux derniers messages (du client et de l'AP) ne sont pas décrits dans la théorie. 
+    Ils semble simplement cloturer l'authentification TLS et initier le 4-way handshake
 
 #### 4-way handshake
 
 ![](files/images/16_4way_1.png)
 
+*Message 1 (Client <- AP)*
+
 ![](files/images/17_4way_2.png)
+
+*Message 2 (Client -> AP)*
 
 ![](files/images/18_4way_3.png)
 
+*Message 3 (Client <- AP)*
+
 ![](files/images/19_4way_4.png)
 
-
----
-
-### 2. (__Optionnel__) Attaque WPA Entreprise (hostapd)
-
-Les réseaux utilisant une authentification WPA Entreprise sont considérés aujourd’hui comme étant très surs. En effet, puisque la Master Key utilisée pour la dérivation des clés WPA est générée de manière aléatoire dans le processus d’authentification, les attaques par dictionnaire ou brute-force utilisés sur WPA Personnel ne sont plus applicables. 
-
-Il existe pourtant d’autres moyens pour attaquer les réseaux Entreprise, se basant sur une mauvaise configuration d’un client WiFi. En effet, on peut proposer un « evil twin » à la victime pour l’attirer à se connecter à un faux réseau qui nous permette de capturer le processus d’authentification interne. Une attaque par brute-force peut être faite sur cette capture, beaucoup plus vulnérable d’être craquée qu’une clé WPA à 256 bits, car elle est effectuée sur le compte d’un utilisateur.
-
-Pour faire fonctionner cette attaque, il est impératif que la victime soit configurée pour ignorer les problèmes de certificats ou que l’utilisateur accepte un nouveau certificat lors d’une connexion.
-
-Pour implémenter l’attaque :
-
-- Installer ```hostapd-wpe``` (il existe des versions modifiées qui peuvent peut-être faciliter la tâche... je ne les connais pas. Dans le doute, utiliser la version originale). Lire la documentation du site de l’outil ou d’autres ressources sur Internet pour comprendre son utilisation
-- Modifier la configuration de ```hostapd-wpe``` pour proposer un réseau semblable au réseau de l’école ou le réseau de votre préférence, sachant que dans le cas d'une attaque réelle, il faudrait utiliser le vrai SSI du réseau de la cible
-- Lancer une capture Wireshark
-- Tenter une connexion au réseau (ne pas utiliser vos identifiants réels)
-- Utiliser un outil de brute-force (```john```, par exemple) pour attaquer le hash capturé (utiliser un mot de passe assez simple pour minimiser le temps)
-
-### Répondez aux questions suivantes :
-
-> **_Question :_** Quelles modifications sont nécessaires dans la configuration de hostapd-wpe pour cette attaque ?
-> 
-> **_Réponse :_** 
-
----
-
-> **_Question:_** Quel type de hash doit-on indiquer à john pour craquer le handshake ?
-> 
-> **_Réponse:_** 
-
----
-
-> **_Question:_** Quelles méthodes d’authentification sont supportées par hostapd-wpe ?
-> 
-> **_Réponse:_**
-
-
-### 3. (__Optionnel__) GTC Downgrade Attack avec [EAPHammer](https://github.com/s0lst1c3/eaphammer) 
-
-[EAPHammer](https://github.com/s0lst1c3/eaphammer) est un outil de nouvelle génération pour les attaques WPA Entreprise. Il peut en particulier faire une attaque de downgrade GTC, pour tenter de capturer les identifiants du client en clair, ce qui évite le besoin de l'attaque par dictionnaire.
-
-- Installer ```EAPHammer```. Lire la documentation du site de l’outil ou d’autres ressources sur Internet pour comprendre son utilisation
-- Modifier la configuration de ```EAPHammer``` pour proposer un réseau semblable au réseau de l’école ou le réseau de votre préférence. Le but est de réaliser une GTC Downgrade Attack.
-- Lancer une capture Wireshark
-- Tenter une connexion au réseau
-
-
-### Répondez aux questions suivantes :
-
-> **_Question :_** Expliquez en quelques mots l'attaque GTC Downgrade
-> 
-> **_Réponse :_** 
-
----
-
-> **_Question:_** Quelles sont vos conclusions et réflexions par rapport à la méthode hostapd-wpe ?
-> 
-> **_Réponse:_** 
+*Message 4 (Client -> AP)*
 
 
 ## Livrables
